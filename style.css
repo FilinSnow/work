@@ -1,0 +1,120 @@
+*,*::before,*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+.container {
+    max-width: 1040px;
+    margin: 0 auto;
+}
+
+.header {
+    margin: 100px 0 0;
+    text-align: center;
+}
+
+.todo__nav {
+    margin-top: 20px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.todo__input {
+    margin-right: 10px;
+}
+
+.todo__input input {
+    font-size: 18px;
+    padding: 10px;
+}
+
+.todo__button button {
+    padding: 10px 30px;
+    cursor: pointer;
+    border: none;
+      
+}
+.todo__tasks {
+    max-width: 600px;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+.tasks__title {
+    margin-bottom: 20px;
+}
+
+.task__check-text {
+    display: flex;
+}
+.task__edit-delete {
+    display: flex;
+}
+.indent {
+    margin-right: 10px;
+    align-self: center;
+}
+.task {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #000;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.uncompleted__tasks {
+    margin: 0 auto;
+    /* border: 1px solid #000; */
+}
+.uncompleted__tasks div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 200px;
+    text-align: center;
+    /* margin: 0 auto; */
+    
+}
+.container__task {
+    margin: 0 auto 10px;
+}
+.but__change-del img{
+    margin-right: 10px;
+}
+.done {
+    color: green;
+    text-decoration: line-through;
+}
+
+.img {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+.input__text {
+    margin-left: 5px;
+    max-width: 150px;
+    padding: 5px;
+}
+.clear__container {
+    display: flex;
+    align-items: center;
+}
+.container__clear-one {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+.input__clear-one input{
+    padding: 5px;
+}
