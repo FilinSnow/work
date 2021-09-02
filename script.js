@@ -4,12 +4,16 @@ let button = null;
 let valueInput = '';
 let input = null
 
-window.onload = function init() {
+window.onload = async function init() {
     input = document.querySelector('.todo__input input');
     input.addEventListener('keyup', updateInput)
     button = document.querySelector('.todo__button button');
     button.addEventListener('click', addTask);
-    localStorage.setItem('tasks', JSON.stringify(allTasks))
+    const response = await fetch('http://localhost:8000/allTasks', {
+        method: 'GET'
+    })
+    const res = await response.json()
+    allTasks = res.data
     render();
 }
 
@@ -63,7 +67,7 @@ const render = () => {
         div.appendChild(checkText);
         div.appendChild(buttonChangeDel);
 
-        delImg.addEventListener('click', () => delTask(index));
+        delImg.addEventListener('click', () => delTask(index, elem.id));
 
         editImg.addEventListener('click', function () {
             editImg.classList.add('hidden');
@@ -79,38 +83,31 @@ const render = () => {
             doneImg.classList.remove('hidden');
         })
 
-        doneImg.addEventListener('click', function () {
+        doneImg.addEventListener('click', async function () {
             doneImg.classList.add('hidden');
             inputText.classList.add('hidden');
             editImg.classList.remove('hidden');
-            console.log(inputText.value);
-            elem.text = inputText.value;
+            elem.text = inputText.value;  
+            const response = await fetch('http://localhost:8000/updateTask', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify({  
+                    id: elem.id,       
+                    text: inputText.value,
+                    isCheck: false
+                })
+            })
             input.value = '';
-            localStorage.setItem('tasks', JSON.stringify(allTasks))
             text.classList.remove('hidden');
             delImg.classList.remove('hidden');
             render();
         })
 
         uncompleteTasks.appendChild(div);
-
     });
-    const inputDel = document.querySelector('.input__clear-one input');
-    const oneDelItemStorage = document.querySelector('.but__clear-one button');
-    oneDelItemStorage.addEventListener('click', () => {
-        if (inputDel.value) {
-            localStorage.removeItem(inputDel.value);
-            allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-            inputDel.value = '';
-            render();
-        }
-    })
-    const allDelItemStorage = document.querySelector('.container__clear__all button');
-    allDelItemStorage.addEventListener('click', () => {
-        localStorage.clear();
-        allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        render();
-    })
 }
 
 const updateInput = (e) => {
@@ -118,11 +115,22 @@ const updateInput = (e) => {
         valueInput = e.target.value;
     }
 }
-const addTask = (e) => {
+const addTask = async (e) => {
     allTasks.push({ text: valueInput, check: false });
+
+    const response = await fetch('http://localhost:8000/createTask', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({
+            text: valueInput,
+            isCheck: false
+        })
+    })
     valueInput = '';
     input.value = '';
-    localStorage.setItem('tasks', JSON.stringify(allTasks))
     render();
 }
 const checkBoxChange = (elem) => {
@@ -131,9 +139,15 @@ const checkBoxChange = (elem) => {
     render();
 }
 
-const delTask = (index) => {
+const delTask = async (index, elemId) => {
     allTasks.splice(index, 1);
-    localStorage.setItem('tasks', JSON.stringify(allTasks))
+    const response = await fetch(`http://localhost:8000/deleteTask?id=${elemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Access-Control-Allow-Origin': '*'
+                },
+            })
     render();
 }
 
@@ -141,4 +155,5 @@ const selectText = (e) => {
     e.target.select()
     console.log(e);
 }
+
 
